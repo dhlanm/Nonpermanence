@@ -1,3 +1,13 @@
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+Thumbs.db
+.classpath
+.project
+*.iml
 .gradle
 /local.properties
 /.idea/workspace.xml
