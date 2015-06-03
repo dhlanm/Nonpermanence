@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -19,6 +20,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void sizeClicked(View view) {
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
