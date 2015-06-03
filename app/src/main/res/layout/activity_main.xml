@@ -57,7 +57,6 @@
             android:layout_margin="2dp"
             android:background="#FF660000"
             android:contentDescription="@string/paint"
-            android:onClick="sizeClicked"
             android:src="@drawable/ayy"
             android:tag="#FF660000" />
         <ImageButton
@@ -66,7 +65,6 @@
             android:layout_margin="2dp"
             android:background="#FF660000"
             android:contentDescription="@string/paint"
-            android:onClick="sizeClicked"
             android:src="@drawable/ayy"
             android:tag="#FF660000" />
         <ImageButton
@@ -75,7 +73,6 @@
             android:layout_margin="2dp"
             android:background="#FF660000"
             android:contentDescription="@string/paint"
-            android:onClick="sizeClicked"
             android:src="@drawable/ayy"
             android:tag="#FF660000" />
         <ImageButton
@@ -84,7 +81,6 @@
             android:layout_margin="2dp"
             android:background="#FF660000"
             android:contentDescription="@string/paint"
-            android:onClick="sizeClicked"
             android:src="@drawable/ayy"
             android:tag="#FF660000" />
     </LinearLayout>
