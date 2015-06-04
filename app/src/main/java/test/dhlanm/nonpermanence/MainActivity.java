@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener{
+public class MainActivity extends ActionBarActivity{
 
     private ImageButton currPaint, brush;
     private DrawView drawView;
@@ -19,55 +19,27 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TEST
-        int test=0;
-        float test2=0;
-        Log.i("hello", "word");
+
         setContentView(R.layout.activity_main);
+
         brush = (ImageButton)findViewById(R.id.brush);
-        brush.setOnClickListener(this);
+        brush.setOnClickListener(new BrushSizeDialogListener());
         drawView = (DrawView) findViewById(R.id.drawing);
+
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
         largeBrush = getResources().getInteger(R.integer.large_size);
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId()==R.id.brush){
-            final Dialog brushDialog = new Dialog(this);
-            brushDialog.setTitle("Brush size:");
-            brushDialog.setContentView(R.layout.brush_chooser);
-            ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
-            smallBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(smallBrush);
-                    drawView.setLastBrushSize(smallBrush);
-                    brushDialog.dismiss();
-                }
-            });
-            ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
-            mediumBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(mediumBrush);
-                    drawView.setLastBrushSize(mediumBrush);
-                    brushDialog.dismiss();
-                }
-            });
-
-            ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
-            largeBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(largeBrush);
-                    drawView.setLastBrushSize(largeBrush);
-                    brushDialog.dismiss();
-                }
-            });
-            brushDialog.show();
-        }
+    public View.OnClickListener getBrushSizeListener(final float size, final Dialog brushDialog){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                drawView.setBrushSize(size);
+                //drawView.setLastBrushSize(size);
+                brushDialog.dismiss();
+            }
+        };
     }
 
     @Override
@@ -91,4 +63,27 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
+
+    // lol for some reason doing a listener differently from the listeners for selecting a brush size
+    private class BrushSizeDialogListener implements View.OnClickListener{
+        public void onClick(View view){
+            if(view.getId()==R.id.brush){
+                final Dialog brushDialog = new Dialog(getParent());
+                brushDialog.setTitle("Brush size:");
+                brushDialog.setContentView(R.layout.brush_chooser);
+
+                ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
+                smallBtn.setOnClickListener(getBrushSizeListener(smallBrush, brushDialog));
+
+                ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
+                mediumBtn.setOnClickListener(getBrushSizeListener(mediumBrush, brushDialog));
+
+                ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
+                largeBtn.setOnClickListener(getBrushSizeListener(largeBrush, brushDialog));
+
+                brushDialog.show();
+            }
+        }
+    }
+
 }

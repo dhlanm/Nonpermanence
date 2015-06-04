@@ -21,40 +21,40 @@ public class DrawView extends View{
 
     private ArrayList<Stroke> strokes = new ArrayList<Stroke>();
 
-    private float brushSize, lastBrushSize;
+    private float brushSize;//, lastBrushSize;
 
     public DrawView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
         currentPaint.setAntiAlias(true);
-        currentPaint.setStrokeWidth(5f);
+        //currentPaint.setStrokeWidth(5f);
         currentPaint.setColor(Color.BLACK);
         currentPaint.setStyle(Paint.Style.STROKE);
         currentPaint.setStrokeJoin(Paint.Join.ROUND);
         currentPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        brushSize = getResources().getInteger(R.integer.medium_size);
-        lastBrushSize = brushSize;
-        currentPaint.setStrokeWidth(brushSize);
-
+        setBrushSize(20);
     }
 
     public void setBrushSize(float newSize){
+        // this function's adjustment makes the brush smaller than if setStrokeWidth were called with the same param
         float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 newSize, getResources().getDisplayMetrics());
-        brushSize=pixelAmount;
+        brushSize = pixelAmount;
         currentPaint.setStrokeWidth(brushSize);
     }
+    /*
     public void setLastBrushSize(float lastSize){
         lastBrushSize=lastSize;
     }
     public float getLastBrushSize(){
         return lastBrushSize;
     }
-
+    */
     @Override
     protected void onDraw(Canvas canvas) {
         //System.out.println("drawn");
+        System.out.println("brushSize is " + brushSize);
         for(int i = 0; i < strokes.size(); i++){
             canvas.drawPath(strokes.get(i).getPath(), strokes.get(i).getPaint());
         }
@@ -63,6 +63,9 @@ public class DrawView extends View{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+
+
         float eventX = event.getX();
         float eventY = event.getY();
 
