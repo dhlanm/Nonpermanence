@@ -36,6 +36,10 @@ public class DrawView extends View{
         setBrushSize(20);
     }
 
+    public ArrayList<Stroke> getStrokes(){
+        return strokes;
+    }
+
     public void setBrushSize(float newSize){
         // this function's adjustment makes the brush smaller than if setStrokeWidth were called with the same param
         float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -54,7 +58,7 @@ public class DrawView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         //System.out.println("drawn");
-        System.out.println("brushSize is " + brushSize);
+        //System.out.println("brushSize is " + brushSize);
         for(int i = 0; i < strokes.size(); i++){
             canvas.drawPath(strokes.get(i).getPath(), strokes.get(i).getPaint());
         }
@@ -63,8 +67,6 @@ public class DrawView extends View{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-
 
         float eventX = event.getX();
         float eventY = event.getY();
@@ -80,7 +82,7 @@ public class DrawView extends View{
                 break;
             case MotionEvent.ACTION_UP:
                 // End stroke
-                strokes.add(new Stroke(currentPath, new Paint(currentPaint)));
+                strokes.add(new Stroke(currentPath, new Paint(currentPaint))); // store stroke
                 currentPath = new Path();
             default:
 
@@ -90,4 +92,6 @@ public class DrawView extends View{
         invalidate();
         return true;
     }
+
+
 }

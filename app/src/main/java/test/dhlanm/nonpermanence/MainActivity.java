@@ -1,5 +1,6 @@
 package test.dhlanm.nonpermanence;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,9 +13,13 @@ import android.widget.ImageButton;
 
 public class MainActivity extends ActionBarActivity{
 
-    private ImageButton currPaint, brush;
+    private ImageButton paintSelectBtn, brushSelectBtn;
     private DrawView drawView;
     private float smallBrush, mediumBrush, largeBrush;
+
+    private Activity selfReference(){
+        return this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +27,9 @@ public class MainActivity extends ActionBarActivity{
 
         setContentView(R.layout.activity_main);
 
-        brush = (ImageButton)findViewById(R.id.brush);
-        brush.setOnClickListener(new BrushSizeDialogListener());
+        brushSelectBtn = (ImageButton)findViewById(R.id.brush);
+        brushSelectBtn.setOnClickListener(new BrushSizeDialogListener());
+
         drawView = (DrawView) findViewById(R.id.drawing);
 
         smallBrush = getResources().getInteger(R.integer.small_size);
@@ -68,7 +74,7 @@ public class MainActivity extends ActionBarActivity{
     private class BrushSizeDialogListener implements View.OnClickListener{
         public void onClick(View view){
             if(view.getId()==R.id.brush){
-                final Dialog brushDialog = new Dialog(getParent());
+                final Dialog brushDialog = new Dialog(selfReference());
                 brushDialog.setTitle("Brush size:");
                 brushDialog.setContentView(R.layout.brush_chooser);
 
