@@ -36,6 +36,10 @@ public class Stroke {
         this.paint = paint;
     }
 
+    // TODO: generate a Firebase-compatible data entity from a Stroke object
     
+
+    // TODO: create a Stroke object from the firebase data
+
 
 }
