@@ -10,27 +10,32 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by dhlanm on 6/3/2015.
  */
 public class DrawView extends View{
-    private Paint paint = new Paint();
-    private Path path = new Path();
+    private Paint currentPaint = new Paint();
+    private Path currentPath = new Path();
+
+    private ArrayList<Stroke> strokes = new ArrayList<Stroke>();
 
     private float brushSize, lastBrushSize;
 
     public DrawView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(5f);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
+        currentPaint.setAntiAlias(true);
+        currentPaint.setStrokeWidth(5f);
+        currentPaint.setColor(Color.BLACK);
+        currentPaint.setStyle(Paint.Style.STROKE);
+        currentPaint.setStrokeJoin(Paint.Join.ROUND);
+        currentPaint.setStrokeCap(Paint.Cap.ROUND);
 
         brushSize = getResources().getInteger(R.integer.medium_size);
         lastBrushSize = brushSize;
-        paint.setStrokeWidth(brushSize);
+        currentPaint.setStrokeWidth(brushSize);
 
     }
 
@@ -38,7 +43,7 @@ public class DrawView extends View{
         float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 newSize, getResources().getDisplayMetrics());
         brushSize=pixelAmount;
-        paint.setStrokeWidth(brushSize);
+        currentPaint.setStrokeWidth(brushSize);
     }
     public void setLastBrushSize(float lastSize){
         lastBrushSize=lastSize;
@@ -49,7 +54,11 @@ public class DrawView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawPath(path, paint);
+        //System.out.println("drawn");
+        for(int i = 0; i < strokes.size(); i++){
+            canvas.drawPath(strokes.get(i).getPath(), strokes.get(i).getPaint());
+        }
+        canvas.drawPath(currentPath, currentPaint);
     }
 
     @Override
@@ -60,13 +69,18 @@ public class DrawView extends View{
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 // Set a new starting point
-                path.moveTo(eventX, eventY);
+                currentPath.moveTo(eventX, eventY);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 // Connect the points
-                path.lineTo(eventX, eventY);
+                currentPath.lineTo(eventX, eventY);
                 break;
+            case MotionEvent.ACTION_UP:
+                // End stroke
+                strokes.add(new Stroke(currentPath, new Paint(currentPaint)));
+                currentPath = new Path();
             default:
+
                 return false;
         }
 

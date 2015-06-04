@@ -1,6 +1,8 @@
 package test.dhlanm.nonpermanence;
 
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 
 import java.util.ArrayList;
@@ -9,23 +11,29 @@ import java.util.ArrayList;
  * Created by Ben on 6/2/2015.
  */
 public class Stroke {
-    boolean black; // true = black, false = white
-    int size;
 
-    ArrayList<Point> points;
+    private Path path;
+    private Paint paint;
 
-    public Stroke(boolean black, int s){
-        this(black, s, new ArrayList<Point>());
+    public Stroke(Path pat, Paint pai){
+        this.path = pat;
+        this.paint = pai;
     }
 
-    public Stroke(boolean black, int s, ArrayList<Point> pts){
-        this.black = black;
-        this.size = s;
-        this.points = pts;
+    public Path getPath() {
+        return path;
     }
 
-    public void addPoint(Point p){
-        points.add(p);
+    public void setPath(Path path) {
+        this.path = path;
+    }
+
+    public Paint getPaint() {
+        return paint;
+    }
+
+    public void setPaint(Paint paint) {
+        this.paint = paint;
     }
 
     
