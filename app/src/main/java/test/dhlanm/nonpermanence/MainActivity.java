@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -16,6 +17,7 @@ public class MainActivity extends ActionBarActivity{
     private ImageButton paintSelectBtn, brushSelectBtn;
     private DrawView drawView;
     private float smallBrush, mediumBrush, largeBrush;
+    private ImageButton currPaint;
 
     private Activity selfReference(){
         return this;
@@ -31,6 +33,10 @@ public class MainActivity extends ActionBarActivity{
         brushSelectBtn.setOnClickListener(new BrushSizeDialogListener());
 
         drawView = (DrawView) findViewById(R.id.drawing);
+
+        LinearLayout paintLayout = (LinearLayout)findViewById(R.id.paint_colors);
+        currPaint = (ImageButton)paintLayout.getChildAt(0);
+        currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
 
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
@@ -53,6 +59,17 @@ public class MainActivity extends ActionBarActivity{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void paintClicked(View view){
+        if(view!=currPaint){
+            ImageButton imgView = (ImageButton)view;
+            String color = view.getTag().toString();
+            drawView.setColor(color);
+            imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
+            currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint));
+            currPaint=(ImageButton)view;
+        }
     }
 
     @Override
