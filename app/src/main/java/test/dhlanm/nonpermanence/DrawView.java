@@ -11,6 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dhlanm on 6/3/2015.
@@ -103,5 +106,17 @@ public class DrawView extends View{
         return true;
     }
 
+    public List<Object> getFBObject(){
+        List<Object> lst = new ArrayList<>();
+        for(int i = 0; i < strokes.size(); i++){
+            lst.add(strokes.get(i).getFBStroke());
+        }
+        return lst;
+    }
 
+    public void testLogFBO(){
+        System.out.println("LOGGING FBO LOLOLOLOLOL\n");
+        System.out.println(getFBObject());
+        System.out.println("DEBUGGING IS FUN JK");
+    }
 }

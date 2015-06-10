@@ -43,16 +43,6 @@ public class MainActivity extends ActionBarActivity{
         largeBrush = getResources().getInteger(R.integer.large_size);
     }
 
-    public View.OnClickListener getBrushSizeListener(final float size, final Dialog brushDialog){
-        return new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                drawView.setBrushSize(size);
-                //drawView.setLastBrushSize(size);
-                brushDialog.dismiss();
-            }
-        };
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,16 +51,6 @@ public class MainActivity extends ActionBarActivity{
         return true;
     }
 
-    public void paintClicked(View view){
-        if(view!=currPaint){
-            ImageButton imgView = (ImageButton)view;
-            String color = view.getTag().toString();
-            drawView.setColor(color);
-            imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
-            currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint));
-            currPaint=(ImageButton)view;
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -85,6 +65,17 @@ public class MainActivity extends ActionBarActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public View.OnClickListener getBrushSizeListener(final float size, final Dialog brushDialog){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                drawView.setBrushSize(size);
+                //drawView.setLastBrushSize(size);
+                brushDialog.dismiss();
+            }
+        };
     }
 
     // lol for some reason doing a listener differently from the listeners for selecting a brush size
@@ -106,6 +97,17 @@ public class MainActivity extends ActionBarActivity{
 
                 brushDialog.show();
             }
+        }
+    }
+
+    public void paintClicked(View view){
+        if(view!=currPaint){
+            ImageButton imgView = (ImageButton)view;
+            String color = view.getTag().toString();
+            drawView.setColor(color);
+            imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
+            currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint));
+            currPaint=(ImageButton)view;
         }
     }
 
