@@ -1,6 +1,7 @@
 package test.dhlanm.nonpermanence;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,28 +23,33 @@ public class DrawView extends View{
     private Paint currentPaint = new Paint();
     private Path currentPath = new Path();
     private int paintColor;
-//    private DrawView drawView;
+    private float brushSize;//, lastBrushSize;
 
+   // private Bitmap canvasBitmap;
+
+//    private DrawView drawView;
 
     private ArrayList<Stroke> strokes = new ArrayList<Stroke>();
 
-    private float brushSize;//, lastBrushSize;
 
     public DrawView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        resetBrush();
 
+    }
+
+    public ArrayList<Stroke> getStrokes(){
+        return strokes;
+    }
+
+    public void resetBrush(){
         currentPaint.setAntiAlias(true);
         //currentPaint.setStrokeWidth(5f);
         currentPaint.setColor(Color.BLACK);
         currentPaint.setStyle(Paint.Style.STROKE);
         currentPaint.setStrokeJoin(Paint.Join.ROUND);
         currentPaint.setStrokeCap(Paint.Cap.ROUND);
-        //drawView = (DrawView)findViewById(R.id.drawing);
         setBrushSize(20);
-    }
-
-    public ArrayList<Stroke> getStrokes(){
-        return strokes;
     }
 
     public void setBrushSize(float newSize){
@@ -61,26 +67,35 @@ public class DrawView extends View{
         return lastBrushSize;
     }
     */
-    @Override
-    protected void onDraw(Canvas canvas) {
-        //System.out.println("drawn");
-        //System.out.println("brushSize is " + brushSize);
-        for(int i = 0; i < strokes.size(); i++){
-            canvas.drawPath(strokes.get(i).getPath(), strokes.get(i).getPaint());
-        }
-        canvas.drawPath(currentPath, currentPaint);
-    }
 
     public void setColor(String newColor){
         invalidate();
         paintColor = Color.parseColor(newColor);
         currentPaint.setColor(paintColor);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh){
+        super.onSizeChanged(w, h, oldw, oldh);
+        canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    protected void onDraw(Canvas canvas) {
+        // this is currently very slow once a large number of paths exist.
+        // the canvas saves strokes into a bitmap image
+        // so it should be unnecessary.
+        for(int i = 0; i < strokes.size(); i++){
+            // TODO test removing this line
+            canvas.drawPath(strokes.get(i).getPath(), strokes.get(i).getPaint());
+        }
 
+        canvas.drawPath(currentPath, currentPaint);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
         float eventX = event.getX();
         float eventY = event.getY();
 
@@ -98,7 +113,6 @@ public class DrawView extends View{
                 strokes.add(new Stroke(currentPath, new Paint(currentPaint))); // store stroke
                 currentPath = new Path();
             default:
-
                 return false;
         }
 
