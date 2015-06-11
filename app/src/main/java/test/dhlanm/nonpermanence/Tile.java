@@ -33,17 +33,5 @@ public class Tile {
         this.pos = pos;
     }
 
-    public List<Object> getFBStrokesObject(){
-        List<Object> lst = new ArrayList<>();
-        for(int i = 0; i < strokes.size(); i++){
-            lst.add(strokes.get(i).getFBStroke());
-        }
-        return lst;
-    }
 
-    public void testLogFBO(){
-        System.out.println("LOGGING FBO LOLOLOLOLOL\n");
-        System.out.println(this.getFBStrokesObject());
-        System.out.println("DEBUGGING IS FUN JK");
-    }
 }

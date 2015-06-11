@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +41,7 @@ public class Stroke {
         this.paint = paint;
     }
 
-    // TODO: test
+    // TODO: test everything below
     public Map<String, String> getFBStroke(){
         Gson gson = new Gson();
         Map<String, String> mp = new HashMap<>();
@@ -49,12 +50,28 @@ public class Stroke {
         return mp;
     }
 
-    // TODO: test
     public static Stroke fromFBStroke(Map<String, String> fbstroke){
         Gson gson = new Gson();
         Path    tpa = gson.fromJson(fbstroke.get("path"),   Path.class);
         Paint   tpt = gson.fromJson(fbstroke.get("paint"),  Paint.class);
         return new Stroke(tpa, tpt);
+    }
+
+
+    public static List<Map<String, String>> getFBStrokesObject(List<Stroke> strokes){
+        List<Map<String, String>> lst = new ArrayList<>();
+        for(int i = 0; i < strokes.size(); i++){
+            lst.add(strokes.get(i).getFBStroke());
+        }
+        return lst;
+    }
+
+    public static List<Stroke> fromFBStrokesObject(List<Map<String, String>> fbstrokes){
+        List<Stroke> lst = new ArrayList<>();
+        for(int i = 0; i < fbstrokes.size(); i++){
+            lst.add( fromFBStroke( fbstrokes.get(i) ) );
+        }
+        return lst;
     }
 
 }
