@@ -2,6 +2,7 @@ package test.dhlanm.nonpermanence;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +12,21 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.firebase.client.Firebase;
+
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity{
 
+    private static final String FIREBASE_URL = "https://shining-torch-306.firebaseio.com/nonpermanence";
+
     private ImageButton paintSelectBtn, brushSelectBtn;
     private DrawView drawView;
     private float smallBrush, mediumBrush, largeBrush;
     private ImageButton currPaint;
+
+    private FirebaseInterfacer fbi;
 
     private Activity selfReference(){
         return this;
@@ -28,8 +35,16 @@ public class MainActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+       // Firebase.setAndroidContext(this);
+
+        if(savedInstanceState == null){
+            fbi = new FirebaseInterfacer(FIREBASE_URL, this);
+        }
+        else{
+
+        }
 
         brushSelectBtn = (ImageButton)findViewById(R.id.brush);
         brushSelectBtn.setOnClickListener(new BrushSizeDialogListener());
@@ -43,6 +58,8 @@ public class MainActivity extends ActionBarActivity{
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
         largeBrush = getResources().getInteger(R.integer.large_size);
+
+
     }
 
 
@@ -76,6 +93,24 @@ public class MainActivity extends ActionBarActivity{
                 drawView.setBrushSize(size);
                 //drawView.setLastBrushSize(size);
                 brushDialog.dismiss();
+            }
+        };
+    }
+
+    public View.OnClickListener testFBRetrieve(){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                fbi.retrieveTile(1, 1, 1);
+            }
+        };
+    }
+
+    public View.OnClickListener testFBSave(){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                fbi.saveTile(new Tile(new Point(1, 1), drawView.getStrokes()));
             }
         };
     }

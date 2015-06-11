@@ -1,6 +1,12 @@
 package test.dhlanm.nonpermanence;
 
+import android.app.Activity;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 import java.util.List;
 
@@ -13,7 +19,8 @@ public class FirebaseInterfacer {
 
     Firebase rootRef;
 
-    public FirebaseInterfacer(String rootURL){
+    public FirebaseInterfacer(String rootURL, Activity context){
+        Firebase.setAndroidContext(context);
         rootRef = new Firebase(rootURL);
     }
 
@@ -23,7 +30,37 @@ public class FirebaseInterfacer {
 
     public void saveTile(Tile t){
         Firebase gridPosRef = rootRef.child(getGridRef(t.getPos().x, t.getPos().y));
-        gridPosRef.push();
+        gridPosRef.push().setValue(Stroke.getFBStrokesObject(t.getStrokes()));
+    }
+
+    public void retrieveTile(int row, int col, int tileNum){
+        Query qref = rootRef.child(getGridRef(row, col)).orderByKey().limitToFirst(1);
+        qref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                System.out.println("retrieved tile " + dataSnapshot.toString());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
 }

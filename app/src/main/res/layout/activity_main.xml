@@ -34,6 +34,12 @@
             android:layout_height="fill_parent"
             android:contentDescription="@string/save"
             android:src="@drawable/ayy" />
+        <ImageButton
+            android:id="@+id/TESTING_retrieve"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="Retrieve"
+            android:src="@drawable/ayy2" />
 
     </LinearLayout>
     <test.dhlanm.nonpermanence.DrawView

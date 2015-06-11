@@ -22,7 +22,7 @@ public class DrawView extends View{
     private Paint currentPaint = new Paint();
     private Path currentPath = new Path();
     private int paintColor;
-    private DrawView drawView;
+//    private DrawView drawView;
 
 
     private ArrayList<Stroke> strokes = new ArrayList<Stroke>();
@@ -38,7 +38,7 @@ public class DrawView extends View{
         currentPaint.setStyle(Paint.Style.STROKE);
         currentPaint.setStrokeJoin(Paint.Join.ROUND);
         currentPaint.setStrokeCap(Paint.Cap.ROUND);
-        drawView = (DrawView)findViewById(R.id.drawing);
+        //drawView = (DrawView)findViewById(R.id.drawing);
         setBrushSize(20);
     }
 
