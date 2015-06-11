@@ -40,7 +40,12 @@ public class MainActivity extends ActionBarActivity{
        // Firebase.setAndroidContext(this);
 
         if(savedInstanceState == null){
+            // stuff in here doesn't happen on rotate
             fbi = new FirebaseInterfacer(FIREBASE_URL, this);
+
+            smallBrush = getResources().getInteger(R.integer.small_size);
+            mediumBrush = getResources().getInteger(R.integer.medium_size);
+            largeBrush = getResources().getInteger(R.integer.large_size);
         }
         else{
 
@@ -55,10 +60,9 @@ public class MainActivity extends ActionBarActivity{
         currPaint = (ImageButton)paintLayout.getChildAt(0);
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
 
-        smallBrush = getResources().getInteger(R.integer.small_size);
-        mediumBrush = getResources().getInteger(R.integer.medium_size);
-        largeBrush = getResources().getInteger(R.integer.large_size);
-
+        // need to test
+        (findViewById(R.id.save)).setOnClickListener(testFBSave());
+        (findViewById(R.id.save)).setOnClickListener(testFBRetrieve());
 
     }
 
@@ -144,7 +148,7 @@ public class MainActivity extends ActionBarActivity{
             drawView.setColor(color);
             imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
             currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint));
-            currPaint=(ImageButton)view;
+            currPaint = (ImageButton)view;
         }
     }
 
