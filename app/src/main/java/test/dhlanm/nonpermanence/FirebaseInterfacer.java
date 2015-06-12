@@ -1,6 +1,7 @@
 package test.dhlanm.nonpermanence;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -31,14 +32,40 @@ public class FirebaseInterfacer {
     public void saveTile(Tile t){
         Firebase gridPosRef = rootRef.child(getGridRef(t.getPos().x, t.getPos().y));
         gridPosRef.push().setValue(Stroke.getFBStrokesObject(t.getStrokes()));
-    }
-
-    public void retrieveTile(int row, int col, int tileNum){
-        Query qref = rootRef.child(getGridRef(row, col)).orderByKey().limitToFirst(1);
+        /*Query qref = rootRef.child(getGridRef(1, 1)).orderByKey().limitToLast(1);
         qref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 System.out.println("retrieved tile " + dataSnapshot.toString());
+                MainActivity.testSetStrokes(dataSnapshot);
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });*/
+    }
+
+    public void retrieveTile(int row, int col, int tileNum){
+        Query qref = rootRef.child(getGridRef(row, col)).orderByKey().limitToLast(1);
+        qref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                System.out.println("retrieved tile " + dataSnapshot.toString());
+                MainActivity.testSetStrokes(dataSnapshot);
             }
 
             @Override

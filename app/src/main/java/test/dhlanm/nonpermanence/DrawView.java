@@ -7,9 +7,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +43,26 @@ public class DrawView extends View{
 
     public ArrayList<Stroke> getStrokes(){
         return strokes;
+    }
+
+    public void setStrokes(List<Map<String, String>> fbstrokes) {
+        //Log.i("SEG", "setStrokes");
+        Log.i("SEG", strokes.toString());
+        ArrayList<Stroke> lst = new ArrayList<>();
+        for(int i = 0; i < fbstrokes.size(); i++){
+            lst.add( fromFBStroke(fbstrokes.get(i)) );
+        }
+        strokes=lst;
+        Log.i("SEG", strokes.toString());
+        //Log.i("SEG", "wat");
+        invalidate();
+    }
+
+    public static Stroke fromFBStroke(Map<String, String> fbstroke){
+        Gson gson = new Gson();
+        Path    tpa = gson.fromJson(fbstroke.get("path"),   Path.class);
+        Paint   tpt = gson.fromJson(fbstroke.get("paint"),  Paint.class);
+        return new Stroke(tpa, tpt);
     }
 
     public void resetBrush(){

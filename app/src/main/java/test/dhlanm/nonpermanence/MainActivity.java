@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -22,7 +24,7 @@ public class MainActivity extends ActionBarActivity{
     private static final String FIREBASE_URL = "https://shining-torch-306.firebaseio.com/nonpermanence";
 
     private ImageButton paintSelectBtn, brushSelectBtn;
-    private DrawView drawView;
+    private static DrawView drawView;
     private float smallBrush, mediumBrush, largeBrush;
     private ImageButton currPaint;
 
@@ -36,7 +38,6 @@ public class MainActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
        // Firebase.setAndroidContext(this);
 
         if(savedInstanceState == null){
@@ -62,7 +63,7 @@ public class MainActivity extends ActionBarActivity{
 
         // need to test
         (findViewById(R.id.save)).setOnClickListener(testFBSave());
-        (findViewById(R.id.save)).setOnClickListener(testFBRetrieve());
+        (findViewById(R.id.TESTING_retrieve)).setOnClickListener(testFBRetrieve());
 
     }
 
@@ -106,8 +107,14 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onClick(View v){
                 fbi.retrieveTile(1, 1, 1);
+
             }
         };
+    }
+
+    public static void testSetStrokes(DataSnapshot dataSnapshot) {
+        //Log.i("SEG", "testSetStrokes");
+        drawView.setStrokes((List<Map<String, String>>) dataSnapshot.getValue());
     }
 
     public View.OnClickListener testFBSave(){
